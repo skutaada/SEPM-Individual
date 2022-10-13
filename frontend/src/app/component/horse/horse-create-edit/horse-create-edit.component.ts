@@ -22,6 +22,7 @@ export enum HorseCreateEditMode {
 })
 export class HorseCreateEditComponent implements OnInit {
 
+  id = -1;
   mode: HorseCreateEditMode = HorseCreateEditMode.create;
   horse: Horse = {
     name: '',
@@ -44,6 +45,8 @@ export class HorseCreateEditComponent implements OnInit {
     switch (this.mode) {
       case HorseCreateEditMode.create:
         return 'Create New Horse';
+      case HorseCreateEditMode.edit:
+        return 'Edit Existing Horse';
       default:
         return '?';
     }
@@ -53,6 +56,8 @@ export class HorseCreateEditComponent implements OnInit {
     switch (this.mode) {
       case HorseCreateEditMode.create:
         return 'Create';
+      case HorseCreateEditMode.edit:
+        return 'Edit';
       default:
         return '?';
     }
@@ -67,6 +72,8 @@ export class HorseCreateEditComponent implements OnInit {
     switch (this.mode) {
       case HorseCreateEditMode.create:
         return 'created';
+      case HorseCreateEditMode.edit:
+        return 'edited';
       default:
         return '?';
     }
@@ -80,6 +87,14 @@ export class HorseCreateEditComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.mode = data.mode;
     });
+    if (!this.modeIsCreate) {
+      this.route.params.subscribe(params => {
+        this.id = params.id;
+      });
+      this.service.getById(this.id).subscribe(data => {
+        this.horse = data;
+      });
+    }
   }
 
   public dynamicCssClassesForInput(input: NgModel): any {
@@ -108,6 +123,9 @@ export class HorseCreateEditComponent implements OnInit {
       switch (this.mode) {
         case HorseCreateEditMode.create:
           observable = this.service.create(this.horse);
+          break;
+        case HorseCreateEditMode.edit:
+          observable = this.service.edit(this.horse);
           break;
         default:
           console.error('Unknown HorseCreateEditMode', this.mode);
