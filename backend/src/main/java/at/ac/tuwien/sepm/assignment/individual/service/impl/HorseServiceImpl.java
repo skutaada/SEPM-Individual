@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseCreateDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDetailDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseListDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.OwnerDto;
@@ -74,6 +75,17 @@ public class HorseServiceImpl implements HorseService {
     return mapper.entityToDetailDto(
         horse,
         ownerMapForSingleId(horse.getOwnerId()));
+  }
+
+  @Override
+  public HorseDetailDto create(HorseCreateDto newHorse) throws ValidationException, ConflictException {
+    LOG.trace("create({})", newHorse);
+    validator.validateForCreate(newHorse);
+    var createdHorse = dao.create(newHorse);
+    return mapper.entityToDetailDto(
+        createdHorse,
+        ownerMapForSingleId(createdHorse.getOwnerId())
+    );
   }
 
 
