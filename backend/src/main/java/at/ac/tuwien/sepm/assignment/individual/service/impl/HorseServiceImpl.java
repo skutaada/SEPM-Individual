@@ -88,6 +88,12 @@ public class HorseServiceImpl implements HorseService {
     );
   }
 
+  @Override
+  public void delete(long id) throws NotFoundException {
+    LOG.trace("delete({})", id);
+    dao.delete(id);
+  }
+
 
   private Map<Long, OwnerDto> ownerMapForSingleId(Long ownerId) {
     try {

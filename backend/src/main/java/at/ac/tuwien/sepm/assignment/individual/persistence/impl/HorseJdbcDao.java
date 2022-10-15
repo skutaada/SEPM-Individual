@@ -99,6 +99,16 @@ public class HorseJdbcDao implements HorseDao {
         ;
   }
 
+  @Override
+  public void delete(long id) throws NotFoundException {
+    LOG.trace("delete ({})", id);
+
+    int deleted = jdbcTemplate.update(SQL_DELETE, id);
+    if (deleted == 0) {
+      throw new NotFoundException("Could not delete horse with id " + id + " because it was not found");
+    }
+  }
+
 
   @Override
   public Horse update(HorseDetailDto horse) throws NotFoundException {

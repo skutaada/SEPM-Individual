@@ -48,6 +48,12 @@ export class HorseService {
     );
   }
 
+  /**
+   * Edit a horse in the system.
+   *
+   * @param horse the data for the horse to be edited
+   * @return an Observable for the edited horse
+   */
   edit(horse: Horse): Observable<Horse> {
     return this.http.put<Horse>(
       baseUri + `/${horse.id}`,
@@ -55,4 +61,14 @@ export class HorseService {
     );
   }
 
+  /**
+   * Delete a horse in the system.
+   *
+   * @param id the id of the horse to be deleted
+   */
+  delete(id: number): Observable<Horse> {
+    return this.http.delete<Horse>(
+      baseUri + `/${id}`
+    );
+  }
 }

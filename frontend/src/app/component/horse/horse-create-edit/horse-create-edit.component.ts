@@ -144,4 +144,16 @@ export class HorseCreateEditComponent implements OnInit {
     }
   }
 
+  public onDelete(): void {
+    const observable = this.service.delete(this.id);
+    observable.subscribe({
+      next: data => {
+        this.notification.success(`Horse ${this.horse.name} successfully deleted.`);
+        this.router.navigate(['/horses']);
+      },
+      error: error => {
+        console.error('Error deleting horse', error);
+      }
+    });
+  }
 }

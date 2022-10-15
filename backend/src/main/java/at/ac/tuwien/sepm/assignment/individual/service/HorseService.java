@@ -53,4 +53,12 @@ public interface HorseService {
    * @throws ValidationException if Horse data do not pass the validation check
    */
   HorseDetailDto create(HorseCreateDto newHorse) throws ValidationException, ConflictException;
+
+  /**
+   * Delete a horse from the persistent data store.
+   *
+   * @param id to ID of the horse to delete
+   * @throws NotFoundException if the horse was not found in the persistent data store.
+   */
+  void delete(long id) throws NotFoundException;
 }

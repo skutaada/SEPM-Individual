@@ -4,3 +4,4 @@ Sum of hours: 0
 
 US 1 - 5 hours
 US 2 - 3 hours
+US 3 - 2 hours
