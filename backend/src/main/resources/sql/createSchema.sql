@@ -13,5 +13,10 @@ CREATE TABLE IF NOT EXISTS horse
   description VARCHAR(4095),
   date_of_birth DATE NOT NULL,
   sex ENUM('MALE', 'FEMALE') NOT NULL,
-  owner_id BIGINT
+  owner_id BIGINT,
+  father_id BIGINT,
+  mother_id BIGINT,
+  CONSTRAINT o_id FOREIGN KEY (owner_id) REFERENCES owner(id) ON DELETE SET NULL,
+  CONSTRAINT f_id FOREIGN KEY (father_id) REFERENCES horse(id) ON DELETE SET NULL,
+  CONSTRAINT m_id FOREIGN KEY (mother_id) REFERENCES horse(id) ON DELETE SET NULL
 );

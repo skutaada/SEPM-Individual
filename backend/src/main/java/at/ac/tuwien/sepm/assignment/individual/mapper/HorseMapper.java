@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.mapper;
 
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseCreateDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDetailDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseListDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.OwnerDto;
@@ -26,7 +27,7 @@ public class HorseMapper {
    * @param owners a map of horse owners by their id, which needs to contain the owner referenced by {@code horse}
    * @return the converted {@link HorseListDto}
    */
-  public HorseListDto entityToListDto(Horse horse, Map<Long, OwnerDto> owners) {
+  public HorseListDto entityToListDto(Horse horse, Map<Long, OwnerDto> owners, Map<Long, HorseDetailDto> fathers, Map<Long, HorseDetailDto> mothers) {
     LOG.trace("entityToDto({})", horse);
     if (horse == null) {
       return null;
@@ -38,7 +39,9 @@ public class HorseMapper {
         horse.getDescription(),
         horse.getDateOfBirth(),
         horse.getSex(),
-        getOwner(horse, owners)
+        getOwner(horse, owners),
+        getFather(horse, fathers),
+        getMother(horse, mothers)
     );
   }
 
@@ -52,7 +55,9 @@ public class HorseMapper {
    */
   public HorseDetailDto entityToDetailDto(
       Horse horse,
-      Map<Long, OwnerDto> owners) {
+      Map<Long, OwnerDto> owners,
+      Map<Long, HorseDetailDto> fathers,
+      Map<Long, HorseDetailDto> mothers) {
     LOG.trace("entityToDto({})", horse);
     if (horse == null) {
       return null;
@@ -65,7 +70,9 @@ public class HorseMapper {
         horse.getDescription(),
         horse.getDateOfBirth(),
         horse.getSex(),
-        getOwner(horse, owners)
+        getOwner(horse, owners),
+        getFather(horse, fathers),
+        getMother(horse, mothers)
     );
   }
 
@@ -79,6 +86,30 @@ public class HorseMapper {
       owner = owners.get(ownerId);
     }
     return owner;
+  }
+
+  private HorseDetailDto getFather(Horse horse, Map<Long, HorseDetailDto> fathers) {
+    HorseDetailDto father = null;
+    var fatherId = horse.getFatherId();
+    if (fatherId != null) {
+      if (!fathers.containsKey(fatherId)) {
+        throw new FatalException("Given horses map does not contain father of this Horse (%d)".formatted(horse.getId()));
+      }
+      father = fathers.get(fatherId);
+    }
+    return father;
+  }
+
+  private HorseDetailDto getMother(Horse horse, Map<Long, HorseDetailDto> mothers) {
+    HorseDetailDto mother = null;
+    var motherId = horse.getMotherId();
+    if (motherId != null) {
+      if (!mothers.containsKey(motherId)) {
+        throw new FatalException("Given horses map does not contain mother of this Horse (%d)".formatted(horse.getId()));
+      }
+      mother = mothers.get(motherId);
+    }
+    return mother;
   }
 
 }

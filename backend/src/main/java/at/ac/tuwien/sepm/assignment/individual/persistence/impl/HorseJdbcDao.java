@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseCreateDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDetailDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.FatalException;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
@@ -13,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +37,17 @@ public class HorseJdbcDao implements HorseDao {
       + "  , date_of_birth = ?"
       + "  , sex = ?"
       + "  , owner_id = ?"
+      + "  , father_id = ?"
+      + "  , mother_id = ?"
       + " WHERE id = ?";
   private static final String SQL_CREATE = "INSERT INTO " + TABLE_NAME
-      + " (name, description, date_of_birth, sex, owner_id) VALUES (?, ?, ?, ?, ?)";
-
+      + " (name, description, date_of_birth, sex, owner_id, father_id, mother_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  private static final String SQL_SELECT_SEARCH = "SELECT * FROM " + TABLE_NAME
+      + " WHERE UPPER(name) LIKE UPPER('%'||COALESCE(?, '')||'%')"
+  //     + " AND UPPER(description) LIKE UPPER('%'||COALESCE(?,'')||'%')";
+//      + " AND date_of_birth LIKE COALESCE(?,'%')";
+      + " AND sex LIKE COALESCE(?,'%')";
+  private static final String SQL_SELECT_SEARCH_LIMIT_CLAUSE = " LIMIT ?";
   private final JdbcTemplate jdbcTemplate;
 
   public HorseJdbcDao(
@@ -49,6 +59,27 @@ public class HorseJdbcDao implements HorseDao {
   public List<Horse> getAll() {
     LOG.trace("getAll()");
     return jdbcTemplate.query(SQL_SELECT_ALL, this::mapRow);
+  }
+
+  @Override
+  public List<Horse> search(HorseSearchDto searchParameters) {
+    LOG.trace("search({})", searchParameters);
+    var query = SQL_SELECT_SEARCH;
+    var params = new ArrayList<>();
+    params.add(searchParameters.name());
+//    params.add(searchParameters.description());
+//    params.add(searchParameters.bornBefore());
+      params.add(searchParameters.sex());
+    LOG.info(params.toString());
+    //params.add(searchParameters.ownerName());
+    //params.add(searchParameters.fatherName());
+    //params.add(searchParameters.motherName());
+    var limit = searchParameters.limit();
+    if (limit != null) {
+      query += SQL_SELECT_SEARCH_LIMIT_CLAUSE;
+      params.add(limit);
+    }
+    return jdbcTemplate.query(query, this::mapRow, params.toArray());
   }
 
   @Override
@@ -80,6 +111,8 @@ public class HorseJdbcDao implements HorseDao {
       stmt.setDate(3, Date.valueOf(newHorse.dateOfBirth()));
       stmt.setString(4, newHorse.sex().toString());
       stmt.setObject(5, newHorse.ownerId());
+      stmt.setObject(6, newHorse.fatherId());
+      stmt.setObject(7, newHorse.motherId());
       return stmt;
     }, keyHolder);
 
@@ -96,6 +129,8 @@ public class HorseJdbcDao implements HorseDao {
         .setDateOfBirth(newHorse.dateOfBirth())
         .setSex(newHorse.sex())
         .setOwnerId(newHorse.ownerId())
+        .setFatherId(newHorse.fatherId())
+        .setMotherId(newHorse.motherId())
         ;
   }
 
@@ -119,6 +154,8 @@ public class HorseJdbcDao implements HorseDao {
         horse.dateOfBirth(),
         horse.sex().toString(),
         horse.ownerId(),
+        horse.fatherId(),
+        horse.motherId(),
         horse.id());
     if (updated == 0) {
       throw new NotFoundException("Could not update horse with ID " + horse.id() + ", because it does not exist");
@@ -131,6 +168,8 @@ public class HorseJdbcDao implements HorseDao {
         .setDateOfBirth(horse.dateOfBirth())
         .setSex(horse.sex())
         .setOwnerId(horse.ownerId())
+        .setFatherId(horse.fatherId())
+        .setMotherId(horse.motherId())
         ;
   }
 
@@ -143,6 +182,8 @@ public class HorseJdbcDao implements HorseDao {
         .setDateOfBirth(result.getDate("date_of_birth").toLocalDate())
         .setSex(Sex.valueOf(result.getString("sex")))
         .setOwnerId(result.getObject("owner_id", Long.class))
+        .setFatherId(result.getObject("father_id", Long.class))
+        .setMotherId(result.getObject("mother_id", Long.class))
         ;
   }
 }

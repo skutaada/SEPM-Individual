@@ -37,11 +37,22 @@ public class HorseEndpoint {
   }
 
   @GetMapping
-  public Stream<HorseListDto> searchHorses(HorseSearchDto searchParameters) {
+  public Stream<HorseListDto> searchHorses(@RequestBody(required = false) HorseSearchDto searchParameters) {
     LOG.info("GET " + BASE_PATH);
     LOG.debug("request parameters: {}", searchParameters);
+    if (searchParameters == null) {
+      LOG.info("dasdadsada");
+      return service.allHorses();
+    }
     // TODO We have the request params in the DTO now, but don't do anything with them yet…
-    return service.allHorses();
+    try {
+      LOG.info(searchParameters.toString());
+      return service.search(searchParameters);
+    } catch (NotFoundException e) {
+      HttpStatus status = HttpStatus.NOT_FOUND;
+      logClientError(status, "Horses to get details of not found", e);
+      throw new ResponseStatusException(status, e.getMessage(), e);
+    }
   }
 
   @GetMapping("{id}")

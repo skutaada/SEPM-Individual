@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.assignment.individual.service;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseCreateDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDetailDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseListDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.exception.ConflictException;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
@@ -61,4 +62,8 @@ public interface HorseService {
    * @throws NotFoundException if the horse was not found in the persistent data store.
    */
   void delete(long id) throws NotFoundException;
+
+  Stream<HorseListDto> search(HorseSearchDto searchParameters) throws NotFoundException;
+
+
 }

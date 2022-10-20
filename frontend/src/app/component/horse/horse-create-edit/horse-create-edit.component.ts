@@ -83,6 +83,14 @@ export class HorseCreateEditComponent implements OnInit {
     ? of([])
     : this.ownerService.searchByName(input, 5);
 
+  fatherSuggestions = (input: string) => (input === '')
+    ? of([])
+    : this.service.searchByName(input, Sex.male, 5);
+
+  motherSuggestions = (input: string) => (input === '')
+    ? of([])
+    : this.service.searchByName(input, Sex.female, 5);
+
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.mode = data.mode;
@@ -110,6 +118,12 @@ export class HorseCreateEditComponent implements OnInit {
     return (owner == null)
       ? ''
       : `${owner.firstName} ${owner.lastName}`;
+  }
+
+  public formatHorseName(horse: Horse | null | undefined): string {
+    return (horse == null)
+      ? ''
+      : `${horse.name}`;
   }
 
 

@@ -2,8 +2,12 @@ package at.ac.tuwien.sepm.assignment.individual.persistence;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseCreateDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDetailDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseListDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
+
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,6 +22,18 @@ public interface HorseDao {
    */
   List<Horse> getAll();
 
+  /**
+   * Search for horses matching the criteria in {@code searchParameters}
+   * <p>
+   *   The returned stream of horses never contains more than {@code searchParameters.maxAmount} elements,
+   *   even if the there would be more matches in the persistent data store.
+   * </p>
+   *
+   * @param searchParameters object containing the search parameters to match
+   * @return a stream containing horses matching the criteria in {@code searchParameters}
+   */
+  List<Horse> search(HorseSearchDto searchParameters);
+
 
   /**
    * Update the horse with the ID given in {@code horse}
@@ -28,6 +44,8 @@ public interface HorseDao {
    * @return the updated horse
    * @throws NotFoundException if the Horse with the given ID does not exist in the persistent data store
    */
+
+
   Horse update(HorseDetailDto horse) throws NotFoundException;
 
   /**

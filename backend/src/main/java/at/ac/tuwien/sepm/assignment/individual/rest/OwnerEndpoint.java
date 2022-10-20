@@ -1,14 +1,21 @@
 package at.ac.tuwien.sepm.assignment.individual.rest;
 
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseCreateDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.OwnerCreateDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.OwnerDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.OwnerSearchDto;
+import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.OwnerService;
 import java.lang.invoke.MethodHandles;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,6 +34,13 @@ public class OwnerEndpoint {
   public Stream<OwnerDto> search(OwnerSearchDto searchParameters) {
     LOG.info("GET " + BASE_PATH + " query parameters: {}", searchParameters);
     return service.search(searchParameters);
+  }
+
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public OwnerDto create(@RequestBody OwnerCreateDto toCreate) throws ValidationException {
+    LOG.info("POST " + BASE_PATH + "/{}", toCreate);
+    return service.create(toCreate);
   }
 
 }

@@ -15,6 +15,8 @@ public record HorseSearchDto(
     LocalDate bornBefore,
     Sex sex,
     String ownerName,
+    String fatherName,
+    String motherName,
     Integer limit
 ) {
 }

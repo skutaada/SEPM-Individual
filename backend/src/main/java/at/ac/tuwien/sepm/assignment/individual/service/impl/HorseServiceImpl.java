@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.assignment.individual.service.impl;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseCreateDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDetailDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseListDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.OwnerDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.ConflictException;
@@ -53,7 +54,11 @@ public class HorseServiceImpl implements HorseService {
       throw new FatalException("Horse, that is already persisted, refers to non-existing owner", e);
     }
     return horses.stream()
-        .map(horse -> mapper.entityToListDto(horse, ownerMap));
+        .map(horse -> mapper.entityToListDto(
+            horse,
+            ownerMap,
+            fatherMapForSingleId(horse.getFatherId()),
+            motherMapForSingleId(horse.getMotherId())));
   }
 
 
@@ -64,7 +69,10 @@ public class HorseServiceImpl implements HorseService {
     var updatedHorse = dao.update(horse);
     return mapper.entityToDetailDto(
         updatedHorse,
-        ownerMapForSingleId(updatedHorse.getOwnerId()));
+        ownerMapForSingleId(updatedHorse.getOwnerId()),
+        fatherMapForSingleId(updatedHorse.getFatherId()),
+        motherMapForSingleId(updatedHorse.getMotherId())
+        );
   }
 
 
@@ -74,7 +82,10 @@ public class HorseServiceImpl implements HorseService {
     Horse horse = dao.getById(id);
     return mapper.entityToDetailDto(
         horse,
-        ownerMapForSingleId(horse.getOwnerId()));
+        ownerMapForSingleId(horse.getOwnerId()),
+        fatherMapForSingleId(horse.getFatherId()),
+        motherMapForSingleId(horse.getMotherId())
+    );
   }
 
   @Override
@@ -84,7 +95,9 @@ public class HorseServiceImpl implements HorseService {
     var createdHorse = dao.create(newHorse);
     return mapper.entityToDetailDto(
         createdHorse,
-        ownerMapForSingleId(createdHorse.getOwnerId())
+        ownerMapForSingleId(createdHorse.getOwnerId()),
+        fatherMapForSingleId(createdHorse.getFatherId()),
+        motherMapForSingleId(createdHorse.getMotherId())
     );
   }
 
@@ -92,6 +105,30 @@ public class HorseServiceImpl implements HorseService {
   public void delete(long id) throws NotFoundException {
     LOG.trace("delete({})", id);
     dao.delete(id);
+  }
+
+  @Override
+  public Stream<HorseListDto> search(HorseSearchDto searchParameters) throws NotFoundException {
+    LOG.trace("search({})", searchParameters);
+    var horses = dao.search(searchParameters);
+    var ownerIds = horses.stream()
+        .map(Horse::getOwnerId)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toUnmodifiableSet());
+    Map<Long, OwnerDto> ownerMap;
+    try {
+      ownerMap = ownerService.getAllById(ownerIds);
+    } catch (NotFoundException e) {
+      throw new FatalException("Horse, that is already persisted, refers to non-existing owner", e);
+    }
+    return horses.stream()
+        .map(horse -> mapper.entityToListDto(
+            horse,
+            ownerMap,
+            fatherMapForSingleId(horse.getFatherId()),
+            motherMapForSingleId(horse.getMotherId())
+        ));
+
   }
 
 
@@ -102,6 +139,26 @@ public class HorseServiceImpl implements HorseService {
           : Collections.singletonMap(ownerId, ownerService.getById(ownerId));
     } catch (NotFoundException e) {
       throw new FatalException("Owner %d referenced by horse not found".formatted(ownerId));
+    }
+  }
+
+  private Map<Long, HorseDetailDto> fatherMapForSingleId(Long fatherId) {
+    try {
+      return  fatherId == null
+          ? null
+          : Collections.singletonMap(fatherId, getById(fatherId));
+    } catch (NotFoundException e) {
+      throw new FatalException("Father %d referenced by horse not found".formatted(fatherId));
+    }
+  }
+
+  private Map<Long, HorseDetailDto> motherMapForSingleId(Long motherId) {
+    try {
+      return motherId == null
+          ? null
+          : Collections.singletonMap(motherId, getById(motherId));
+    } catch (NotFoundException e) {
+      throw new FatalException("Mother %d referenced by horse not found".formatted(motherId));
     }
   }
 
