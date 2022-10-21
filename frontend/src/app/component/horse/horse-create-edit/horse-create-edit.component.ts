@@ -3,7 +3,7 @@ import {NgForm, NgModel} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {Observable, of} from 'rxjs';
-import {Horse} from 'src/app/dto/horse';
+import {Horse, HorseSearch} from 'src/app/dto/horse';
 import {Owner} from 'src/app/dto/owner';
 import {Sex} from 'src/app/dto/sex';
 import {HorseService} from 'src/app/service/horse.service';
@@ -30,6 +30,7 @@ export class HorseCreateEditComponent implements OnInit {
     dateOfBirth: new Date(),
     sex: Sex.female,
   };
+  horseSearch: HorseSearch = {};
 
 
   constructor(

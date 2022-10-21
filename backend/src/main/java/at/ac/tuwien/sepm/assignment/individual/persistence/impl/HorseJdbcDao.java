@@ -69,7 +69,9 @@ public class HorseJdbcDao implements HorseDao {
     params.add(searchParameters.name());
 //    params.add(searchParameters.description());
 //    params.add(searchParameters.bornBefore());
-      params.add(searchParameters.sex());
+      params.add(searchParameters.sex() == null
+        ? null
+        : searchParameters.sex().toString());
     LOG.info(params.toString());
     //params.add(searchParameters.ownerName());
     //params.add(searchParameters.fatherName());

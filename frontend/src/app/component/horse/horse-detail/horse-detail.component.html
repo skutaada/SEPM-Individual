@@ -1,0 +1,112 @@
+
+<h1 class="display-1">Details of Horse</h1>
+
+
+<div class="row">
+  <!-- Start name and date of birth row -->
+  <div class="mb-2 col-lg-6">
+    <div class="row">
+      <label class="text-md-end text-muted col-md-2 col-lg-4">
+        Name
+      </label>
+      <div class="col-md-10 col-lg-6">
+        <label class="text-md-end">
+          {{horse.name}}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="mb-2 col-lg-6">
+    <div class="row">
+      <label class="text-md-end text-muted col-md-2 col-lg-4">
+        Date of Birth
+      </label>
+      <div class="col-md-10 col-lg-6">
+        <label class="text-md-end">
+          {{horse.dateOfBirth}}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Start sex and owner row -->
+  <div class="mb-2 col-lg-6">
+    <div class="row">
+      <label class="text-md-end text-muted col-md-2 col-lg-4">
+        Sex
+      </label>
+      <div class="col-md-10 col-lg-8">
+        <label>
+          {{horse.sex}}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="mb-2 col-lg-6">
+    <div class="row">
+      <label class="text-md-end text-muted col-md-2 col-lg-4">
+        Owner
+      </label>
+      <div class="col-md-10 col-lg-8">
+        <label>
+          {{formatOwnerName(horse.owner)}}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <!-- Start father and mother row -->
+  <div class="mb-2 col-lg-6">
+    <div class="row">
+      <label class="text-md-end text-muted col-md-2 col-lg-4">
+        Father
+      </label>
+      <div class="col-md-10 col-lg-8">
+        <a [routerLink]="['/horses/detail', horse.father.id]">
+          {{formatHorseName(horse.father)}}
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="mb-2 col-lg-6">
+    <div class="row">
+      <label class="text-md-end text-muted col-md-2 col-lg-4">
+        Mother
+      </label>
+      <div class="col-md-10 col-lg-8">
+        <a [routerLink]="['/horses/detail', horse.mother.id]">
+          {{formatHorseName(horse.mother)}}
+        </a>
+      </div>
+    </div>
+  </div>
+  <label class="text-md-end text-muted col-md-2">
+    Description
+  </label>
+  <label class="col-md-10 col-lg-6">
+    {{horse.description}}
+  </label>
+</div>
+
+<div class="mt-4 d-flex flex-row">
+  <button type="button"
+          class="btn btn-danger"
+          (click)="onDelete()"
+          >
+    <i class="bi bi-trash"></i>
+    Delete
+  </button>
+  <span class="flex-grow-1"></span>
+  <button type="submit"
+          class="btn btn-primary"
+          type="submit"
+          (click)="onEdit()"
+          >
+    Edit
+  </button>
+</div>
+
+
