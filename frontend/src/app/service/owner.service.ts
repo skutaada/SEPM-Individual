@@ -15,6 +15,22 @@ export class OwnerService {
     private http: HttpClient,
   ) { }
 
+  /**
+   * Get all owners stored in the system
+   *
+   * @return observable list of found owners.
+   */
+  getAll(): Observable<Owner[]> {
+    return this.http.get<Owner[]>(baseUri);
+  }
+
+  create(owner: Owner): Observable<Owner> {
+    return this.http.post<Owner>(
+      baseUri,
+      owner
+    );
+  }
+
   public searchByName(name: string, limitTo: number): Observable<Owner[]> {
     const params = new HttpParams()
       .set('name', name)

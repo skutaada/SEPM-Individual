@@ -7,3 +7,4 @@ US 2 - 3 hours
 US 3 - 2 hours
 US 4 - 4 hours
 US 5 - 2 hours
+US 8 - 1 hour
