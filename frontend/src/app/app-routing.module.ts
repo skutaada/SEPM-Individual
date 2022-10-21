@@ -7,6 +7,7 @@ import {
 import {HorseComponent} from './component/horse/horse.component';
 import {HorseDetailComponent} from './component/horse/horse-detail/horse-detail.component';
 import {OwnerComponent} from './component/owner/owner.component';
+import {OwnerCreateComponent} from './component/owner/owner-create/owner-create.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'horses', pathMatch: 'full'},
@@ -16,7 +17,10 @@ const routes: Routes = [
     {path: 'edit/:id', component: HorseCreateEditComponent, data: {mode: HorseCreateEditMode.edit}},
     {path: 'detail/:id', component: HorseDetailComponent}
   ]},
-  {path: 'owners', component: OwnerComponent},
+  {path: 'owners', children: [
+      {path: '', component: OwnerComponent},
+      {path: 'create', component: OwnerCreateComponent}
+    ]},
   {path: '**', redirectTo: 'horses'},
 ];
 

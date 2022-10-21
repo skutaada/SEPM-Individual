@@ -1,0 +1,75 @@
+<h1 class="display-1">Create New Owner</h1>
+
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <div class="row">
+    <!-- Start first name, last name and email row -->
+    <div class="mb-2 col-lg-6">
+      <div class="row">
+        <label for="ownerFirstName" class="col-form-label text-md-end text-muted col-md-2 col-lg-4">
+          First Name
+        </label>
+        <div class="col-md-10 col-lg-8">
+          <input type="text"
+                 id="ownerFirstName"
+                 name="ownerFirstName"
+                 placeholder="First Name"
+                 class="form-control"
+                 [class]="dynamicCssClassesForInput(ownerFirstNameModel)"
+                 [(ngModel)]="owner.firstName"
+                 #ownerFirstNameModel="ngModel"
+                 required>
+          <div class="invalid-feedback">
+            First Name is required
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-2 col-lg-6">
+      <div class="row">
+        <label for="ownerLastName" class="col-form-label text-md-end text-muted col-md-2 col-lg-4">
+          Last Name
+        </label>
+        <div class="col-md-10 col-lg-8">
+          <input type="text"
+                 id="ownerLastName"
+                 name="ownerLastName"
+                 placeholder="Last Name"
+                 class="form-control"
+                 [class]="dynamicCssClassesForInput(ownerLastNameModel)"
+                 [(ngModel)]="owner.lastName"
+                 #ownerLastNameModel="ngModel"
+                 required
+                 >
+          <div class="invalid-feedback">
+            Last Name is required
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-2 col-lg-6">
+      <div class="row">
+        <label for="ownerEmail" class="col-form-label text-md-end text-muted col-md-2 col-lg-4">
+          Email
+        </label>
+        <div class="col-md-10 col-lg-8">
+          <input type="text"
+                 id="ownerEmail"
+                 name="ownerEmail"
+                 placeholder="Email"
+                 class="form-control"
+                 [(ngModel)]="owner.email"
+                 >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-4 d-flex flex-row">
+    <span class="flex-grow-1"></span>
+    <button type="submit"
+            class="btn btn-primary"
+            [disabled]="!form.valid"
+            >
+      Create
+    </button>
+  </div>
+</form>
