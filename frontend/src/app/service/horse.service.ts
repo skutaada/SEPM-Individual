@@ -80,4 +80,25 @@ export class HorseService {
     return this.http.get<Horse[]>(baseUri, {params});
 
   }
+
+  search(horseSearch: HorseSearch): Observable<Horse[]> {
+    let params = new HttpParams();
+    console.log(horseSearch);
+    if (horseSearch.name) {
+      params = params.set('name', horseSearch.name);
+    }
+    if (horseSearch.description) {
+      params = params.set('description', horseSearch.description);
+    }
+    if (horseSearch.dateOfBirth) {
+      params = params.set('bornBefore', horseSearch.dateOfBirth.toString());
+    }
+    if (horseSearch.sex) {
+      params = params.set('sex', horseSearch.sex);
+    }
+    if (horseSearch.owner) {
+      params = params.set('owner', horseSearch.owner);
+    }
+    return this.http.get<Horse[]>(baseUri, {params});
+  }
 }

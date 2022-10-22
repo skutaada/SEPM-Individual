@@ -10,28 +10,30 @@
   </a>
 </div>
 
-<form class="d-flex flex-row w-auto mb-3" (submit)="reloadHorses()">
+<form #form="ngForm" class="d-flex flex-row w-auto mb-3" (keyup)="searchHorses()">
   <!-- this button is here, just so that simple submitting of this form
        to reload the horses, is possible -->
   <button type="submit" hidden="true">submit</button>
   <div class="flex-grow-2">
-    <label for="searchHorseName" class="col-form-label">
+    <label class="col-form-label">
       Name
     </label>
     <input type="text" name="searchHorseName"
            class="form-control"
+           [(ngModel)]="horseSearch.name"
            >
   </div>
   <div class="flex-grow-1 ms-1">
-    <label for="searchHorseDescription" class="col-form-label">
+    <label class="col-form-label">
       Description
     </label>
     <input type="text" name="searchHorseDescription"
            class="form-control"
+           [(ngModel)]="horseSearch.description"
            >
   </div>
   <div class="ms-1">
-    <label for="searchHorseDateOfBirth" class="col-form-label">
+    <label class="col-form-label">
       Date of Birth
     </label>
     <!-- pattern and placeholder are fallbacks for browser, that use a simple text input for type="date"
@@ -41,29 +43,33 @@
            pattern="\d{4}-\d{2}-\d{2}"
            placeholder="yyyy-mm-dd"
            class="form-control"
+           [(ngModel)]="horseSearch.dateOfBirth"
+           (ngModelChange)="searchHorses()"
            >
   </div>
   <div class="ms-1">
-    <label for="searchHorseSex" class="col-form-label">
+    <label class="col-form-label">
       Sex
     </label>
     <select name="searchHorseSex"
             class="form-select"
+            [(ngModel)]="horseSearch.sex"
+            (change)="searchHorses()"
             >
       <option></option>
       <option value="FEMALE">Female</option>
       <option value="MALE">Male</option>
     </select>
   </div>
-  <div class="flex-grow-2 ms-1">
-    <label for="searchHorseOwner" class="col-form-label">
+  <div class="flex-grow-2">
+    <label class="col-form-label">
       Owner
     </label>
-    <app-autocomplete name="searchHorseOwner"
-                      textInputClass="form-control"
-                      valueNeedsToMatchSuggestion="false"
-                      >
-    </app-autocomplete>
+    <input type="text"
+           class="form-control"
+           name="searchHorseOwner"
+          [(ngModel)]="horseSearch.owner"
+          >
   </div>
 </form>
 
@@ -91,6 +97,12 @@
                aria-label="Show horse details">
               <i class="bi bi-info-lg"></i>
             </a>
+            <a class="btn btn-sm responsive-danger-button"
+               (click)="onDelete(horse.id, horse.name)"
+               aria-label="Delete horse">
+              <i class="bi bi-trash"></i>
+            </a>
+
             <a class="btn btn-sm responsive-warning-button"
                [routerLink]="['edit', horse.id]"
                aria-label="Edit horse">

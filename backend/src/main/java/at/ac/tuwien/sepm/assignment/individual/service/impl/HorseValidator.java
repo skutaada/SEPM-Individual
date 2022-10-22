@@ -7,6 +7,8 @@ import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,14 @@ public class HorseValidator {
       if (horse.description().length() > 4095) {
         validationErrors.add("Horse description too long: longer than 4095 characters");
       }
+    }
+
+    if (horse.fatherId() == horse.id()) {
+      validationErrors.add("Horse father cannot be the horse itself");
+    }
+
+    if (horse.motherId() == horse.id()) {
+      validationErrors.add("Horse mother cannot be the horse itself");
     }
 
     // TODO this is not complete…

@@ -154,6 +154,7 @@ export class HorseCreateEditComponent implements OnInit {
         error: error => {
           console.error('Error creating horse', error);
           // TODO show an error message to the user. Include and sensibly present the info from the backend!
+          this.notification.error(`Horse ${this.horse.name} failed to update because: ${error.error.errors}`);
         }
       });
     }

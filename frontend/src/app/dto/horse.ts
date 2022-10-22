@@ -18,4 +18,5 @@ export interface HorseSearch {
   description?: string;
   dateOfBirth?: Date;
   sex?: Sex;
+  owner?: string;
 }

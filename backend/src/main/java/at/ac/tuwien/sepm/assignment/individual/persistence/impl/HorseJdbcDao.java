@@ -15,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +27,7 @@ public class HorseJdbcDao implements HorseDao {
   private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private static final String TABLE_NAME = "horse";
+  private static final String TABLE_NAME_OWNER = "owner";
   private static final String SQL_DELETE = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
   private static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
   private static final String SQL_SELECT_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
@@ -42,11 +42,12 @@ public class HorseJdbcDao implements HorseDao {
       + " WHERE id = ?";
   private static final String SQL_CREATE = "INSERT INTO " + TABLE_NAME
       + " (name, description, date_of_birth, sex, owner_id, father_id, mother_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  private static final String SQL_SELECT_SEARCH = "SELECT * FROM " + TABLE_NAME
-      + " WHERE UPPER(name) LIKE UPPER('%'||COALESCE(?, '')||'%')"
-  //     + " AND UPPER(description) LIKE UPPER('%'||COALESCE(?,'')||'%')";
-//      + " AND date_of_birth LIKE COALESCE(?,'%')";
-      + " AND sex LIKE COALESCE(?,'%')";
+  private static final String SQL_SELECT_SEARCH = "SELECT * FROM " + TABLE_NAME + " LEFT JOIN " + TABLE_NAME_OWNER + " ON horse.owner_id=owner.id WHERE TRUE";
+  private static final String SQL_SELECT_SEARCH_NAME = " AND UPPER(name) LIKE UPPER('%'||COALESCE(?,'')||'%')";
+  private static final String SQL_SELECT_SEARCH_DESCRIPTION = " AND UPPER(description) LIKE UPPER('%'||COALESCE(?,'')||'%')";
+  private static final String SQL_SELECT_SEARCH_DATE_OF_BIRTH = " AND date_of_birth <= ?";
+  private static final String SQL_SELECT_SEARCH_SEX = " AND sex LIKE COALESCE(?,'%')";
+  private static final String SQL_SELECT_SEARCH_OWNER_NAME = " AND UPPER(first_name||' '||last_name) like UPPER('%'||COALESCE(?, '')||'%')";
   private static final String SQL_SELECT_SEARCH_LIMIT_CLAUSE = " LIMIT ?";
   private final JdbcTemplate jdbcTemplate;
 
@@ -66,16 +67,27 @@ public class HorseJdbcDao implements HorseDao {
     LOG.trace("search({})", searchParameters);
     var query = SQL_SELECT_SEARCH;
     var params = new ArrayList<>();
-    params.add(searchParameters.name());
-//    params.add(searchParameters.description());
-//    params.add(searchParameters.bornBefore());
-      params.add(searchParameters.sex() == null
-        ? null
-        : searchParameters.sex().toString());
+    if (searchParameters.name() != null) {
+      query += SQL_SELECT_SEARCH_NAME;
+      params.add(searchParameters.name());
+    }
+    if (searchParameters.description() != null) {
+      query += SQL_SELECT_SEARCH_DESCRIPTION;
+      params.add(searchParameters.description());
+    }
+    if (searchParameters.bornBefore() != null) {
+      query += SQL_SELECT_SEARCH_DATE_OF_BIRTH;
+      params.add(Date.valueOf(searchParameters.bornBefore()).toString());
+    }
+    if (searchParameters.sex() != null) {
+      query += SQL_SELECT_SEARCH_SEX;
+      params.add(searchParameters.sex().toString());
+    }
+    if (searchParameters.owner() != null) {
+      query += SQL_SELECT_SEARCH_OWNER_NAME;
+      params.add(searchParameters.owner());
+    }
     LOG.info(params.toString());
-    //params.add(searchParameters.ownerName());
-    //params.add(searchParameters.fatherName());
-    //params.add(searchParameters.motherName());
     var limit = searchParameters.limit();
     if (limit != null) {
       query += SQL_SELECT_SEARCH_LIMIT_CLAUSE;
