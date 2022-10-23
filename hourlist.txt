@@ -1,6 +1,6 @@
 Name: Adam Skuta
 Matriculation number: 12208176
-Sum of hours: 0
+Sum of hours: 27
 
 US 1 - 5 hours
 US 2 - 3 hours
@@ -10,3 +10,4 @@ US 5 - 2 hours
 US 6 - 4 hours
 US 7 - 1 hour
 US 8 - 1 hour
+US 9 - 5 hours

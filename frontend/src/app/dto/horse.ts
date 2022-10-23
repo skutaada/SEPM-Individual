@@ -13,10 +13,19 @@ export interface Horse {
 }
 
 
+
 export interface HorseSearch {
   name?: string;
   description?: string;
   dateOfBirth?: Date;
   sex?: Sex;
   owner?: string;
+}
+
+
+export interface HorseNode {
+  id?: number;
+  name?: string;
+  dateOfBirth?: Date;
+  parents?: HorseNode[];
 }

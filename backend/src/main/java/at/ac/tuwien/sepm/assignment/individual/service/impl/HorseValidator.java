@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseCreateDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDetailDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.exception.ConflictException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import java.lang.invoke.MethodHandles;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class HorseValidator {
   private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 
   public void validateForUpdate(HorseDetailDto horse) throws ValidationException, ConflictException {
     LOG.trace("validateForUpdate({})", horse);
@@ -43,7 +44,7 @@ public class HorseValidator {
       validationErrors.add("Horse mother cannot be the horse itself");
     }
 
-    // TODO this is not complete…
+
 
     if (!validationErrors.isEmpty()) {
       throw new ValidationException("Validation of horse for update failed", validationErrors);

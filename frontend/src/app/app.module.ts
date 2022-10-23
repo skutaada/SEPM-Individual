@@ -16,6 +16,10 @@ import {HorseComponent} from './component/horse/horse.component';
 import { HorseDetailComponent } from './component/horse/horse-detail/horse-detail.component';
 import { OwnerComponent } from './component/owner/owner.component';
 import { OwnerCreateComponent } from './component/owner/owner-create/owner-create.component';
+import { FamilyTreeComponent } from './component/horse/family-tree/family-tree.component';
+import {MatTreeModule} from '@angular/material/tree';
+import {MatIconModule} from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -27,6 +31,7 @@ import { OwnerCreateComponent } from './component/owner/owner-create/owner-creat
     HorseDetailComponent,
     OwnerComponent,
     OwnerCreateComponent,
+    FamilyTreeComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +42,9 @@ import { OwnerCreateComponent } from './component/owner/owner-create/owner-creat
     ToastrModule.forRoot(),
     // Needed for Toastr
     BrowserAnimationsModule,
+    MatTreeModule,
+    MatIconModule,
+    MatFormFieldModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
