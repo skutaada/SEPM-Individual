@@ -44,7 +44,6 @@ public class HorseEndpoint {
     if (searchParameters == null) {
       return service.allHorses();
     }
-    // TODO We have the request params in the DTO now, but don't do anything with them yet…
     try {
       LOG.info(searchParameters.toString());
       return service.search(searchParameters);
@@ -76,7 +75,7 @@ public class HorseEndpoint {
   }
 
   @PutMapping("{id}")
-  public HorseDetailDto update(@PathVariable long id, @RequestBody HorseDetailDto toUpdate) throws ConflictException {
+  public HorseDetailDto update(@PathVariable long id, @RequestBody HorseDetailDto toUpdate) throws ConflictException, ValidationException {
     LOG.info("PUT " + BASE_PATH + "/{}", toUpdate);
     LOG.debug("Body of request:\n{}", toUpdate);
     try {
@@ -84,10 +83,6 @@ public class HorseEndpoint {
     } catch (NotFoundException e) {
       HttpStatus status = HttpStatus.NOT_FOUND;
       logClientError(status, "Horse to update not found", e);
-      throw new ResponseStatusException(status, e.getMessage(), e);
-    } catch (ValidationException e) {
-      HttpStatus status = HttpStatus.BAD_REQUEST;
-      logClientError(status, "Horse failed the validation", e);
       throw new ResponseStatusException(status, e.getMessage(), e);
     }
   }
