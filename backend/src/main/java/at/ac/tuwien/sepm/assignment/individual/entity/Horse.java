@@ -71,14 +71,18 @@ public class Horse {
     return this;
   }
 
-  public Long getFatherId() { return fatherId; }
+  public Long getFatherId() {
+    return fatherId;
+  }
 
   public Horse setFatherId(Long fatherId) {
     this.fatherId = fatherId;
     return this;
   }
 
-  public Long getMotherId() { return motherId; }
+  public Long getMotherId() {
+    return motherId;
+  }
 
   public Horse setMotherId(Long motherId) {
     this.motherId = motherId;

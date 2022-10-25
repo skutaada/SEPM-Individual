@@ -42,7 +42,7 @@ public class HorseValidator {
       validationErrors.add("No ID given");
     }
 
-    if (horse.name() == null){
+    if (horse.name() == null) {
       validationErrors.add("Horses name cannot be empty");
     } else if (horse.name().isBlank()) {
       validationErrors.add("Horses name is given but is blank");
@@ -72,10 +72,10 @@ public class HorseValidator {
 
     if (horse.motherId() != null) {
       try {
-         var mother = horseDao.getById(horse.motherId());
-         if (mother.getMotherId() == horse.id()) {
-           conflictErrors.add("Cannot set horses daughter as mother");
-         }
+        var mother = horseDao.getById(horse.motherId());
+        if (mother.getMotherId() == horse.id()) {
+          conflictErrors.add("Cannot set horses daughter as mother");
+        }
       } catch (NotFoundException e) {
         conflictErrors.add("Horses mother must exist");
       }
@@ -121,7 +121,7 @@ public class HorseValidator {
     List<String> validationErrors = new ArrayList<>();
     List<String> conflictErrors = new ArrayList<>();
 
-    if (horse.name() == null){
+    if (horse.name() == null) {
       validationErrors.add("Horses name cannot be empty");
     } else if (horse.name().isBlank()) {
       validationErrors.add("Horses name is given but blank");
