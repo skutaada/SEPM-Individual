@@ -1,0 +1,12 @@
+at.ac.tuwien.sepm.assignment.individual
+at.ac.tuwien.sepm.assignment.individual.config
+at.ac.tuwien.sepm.assignment.individual.dto
+at.ac.tuwien.sepm.assignment.individual.entity
+at.ac.tuwien.sepm.assignment.individual.exception
+at.ac.tuwien.sepm.assignment.individual.mapper
+at.ac.tuwien.sepm.assignment.individual.persistence
+at.ac.tuwien.sepm.assignment.individual.persistence.impl
+at.ac.tuwien.sepm.assignment.individual.rest
+at.ac.tuwien.sepm.assignment.individual.service
+at.ac.tuwien.sepm.assignment.individual.service.impl
+at.ac.tuwien.sepm.assignment.individual.type
