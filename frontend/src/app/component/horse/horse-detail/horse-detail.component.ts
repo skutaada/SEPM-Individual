@@ -33,9 +33,9 @@ export class HorseDetailComponent implements OnInit {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.route.params.subscribe(params => {
       this.id = params.id;
-    });
-    this.service.getById(this.id).subscribe(data => {
-      this.horse = data;
+      this.service.getById(this.id).subscribe(data => {
+        this.horse = data;
+      });
     });
   }
 
@@ -51,6 +51,12 @@ export class HorseDetailComponent implements OnInit {
       : `${horse.name}`;
   }
 
+  public formatHorseId(horse: Horse | null | undefined): string {
+    return (horse == null)
+      ? ''
+      : `${horse.id}`;
+  }
+
   public onEdit(): void {
     this.router.navigate([`/horses/edit/${this.id}`]);
   }
@@ -63,7 +69,7 @@ export class HorseDetailComponent implements OnInit {
         this.router.navigate(['/horses']);
       },
       error: error => {
-        console.error('Error deleting horse', error);
+        this.notification.error(error.message, error.errors);
       }
     });
   }

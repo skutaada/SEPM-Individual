@@ -65,7 +65,7 @@
         Father
       </label>
       <div class="col-md-10 col-lg-8">
-        <a [routerLink]="['/horses/detail', horse.father.id]">
+        <a [routerLink]="['/horses/detail', formatHorseId(horse.father)]" class="text-decoration-underline">
           {{formatHorseName(horse.father)}}
         </a>
       </div>
@@ -77,7 +77,7 @@
         Mother
       </label>
       <div class="col-md-10 col-lg-8">
-        <a [routerLink]="['/horses/detail', horse.mother.id]">
+        <a [routerLink]="['/horses/detail', formatHorseId(horse.mother)]" class="text-decoration-underline">
           {{formatHorseName(horse.mother)}}
         </a>
       </div>
