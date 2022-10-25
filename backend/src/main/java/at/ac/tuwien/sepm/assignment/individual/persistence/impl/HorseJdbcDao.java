@@ -107,6 +107,7 @@ public class HorseJdbcDao implements HorseDao {
     }
     if (horses.size() > 1) {
       // This should never happen!!
+      LOG.error("Too many horses with ID %d found".formatted(id));
       throw new FatalException("Too many horses with ID %d found".formatted(id));
     }
 
@@ -133,6 +134,7 @@ public class HorseJdbcDao implements HorseDao {
     Number key = keyHolder.getKey();
     if (key == null) {
       // This should never happen. If it does, something is wrong with the DB or the way the prepared statement is set up.
+      LOG.error("Could not extract key for newly created owner. There is probably a programming error…");
       throw new FatalException("Could not extract key for newly created owner. There is probably a programming error…");
     }
 

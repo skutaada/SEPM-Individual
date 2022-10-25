@@ -51,6 +51,7 @@ public class OwnerJdbcDao implements OwnerDao {
     }
     if (owners.size() > 1) {
       // If this happens, something is wrong with either the DB or the select
+      LOG.error("Found more than one owner with ID %d".formatted(id));
       throw new FatalException("Found more than one owner with ID %d".formatted(id));
     }
     return owners.get(0);
@@ -72,6 +73,7 @@ public class OwnerJdbcDao implements OwnerDao {
     Number key = keyHolder.getKey();
     if (key == null) {
       // This should never happen. If it does, something is wrong with the DB or the way the prepared statement is set up.
+      LOG.error("Could not extract key for newly created owner. There is probably a programming error…");
       throw new FatalException("Could not extract key for newly created owner. There is probably a programming error…");
     }
 

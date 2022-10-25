@@ -51,6 +51,7 @@ public class HorseServiceImpl implements HorseService {
     try {
       ownerMap = ownerService.getAllById(ownerIds);
     } catch (NotFoundException e) {
+      LOG.error("Horse, that is already persisted, refers to non-existing owner", e);
       throw new FatalException("Horse, that is already persisted, refers to non-existing owner", e);
     }
     return horses.stream()
@@ -119,6 +120,7 @@ public class HorseServiceImpl implements HorseService {
     try {
       ownerMap = ownerService.getAllById(ownerIds);
     } catch (NotFoundException e) {
+      LOG.error("Horse, that is already persisted, refers to non-existing owner", e);
       throw new FatalException("Horse, that is already persisted, refers to non-existing owner", e);
     }
     return horses.stream()
@@ -138,6 +140,7 @@ public class HorseServiceImpl implements HorseService {
           ? null
           : Collections.singletonMap(ownerId, ownerService.getById(ownerId));
     } catch (NotFoundException e) {
+      LOG.error("Owner %d referenced by horse not found".formatted(ownerId));
       throw new FatalException("Owner %d referenced by horse not found".formatted(ownerId));
     }
   }
@@ -148,6 +151,7 @@ public class HorseServiceImpl implements HorseService {
           ? null
           : Collections.singletonMap(fatherId, getById(fatherId));
     } catch (NotFoundException e) {
+      LOG.error("Father %d referenced by horse not found".formatted(fatherId));
       throw new FatalException("Father %d referenced by horse not found".formatted(fatherId));
     }
   }
@@ -158,6 +162,7 @@ public class HorseServiceImpl implements HorseService {
           ? null
           : Collections.singletonMap(motherId, getById(motherId));
     } catch (NotFoundException e) {
+      LOG.error("Mother %d referenced by horse not found".formatted(motherId));
       throw new FatalException("Mother %d referenced by horse not found".formatted(motherId));
     }
   }
