@@ -16,7 +16,7 @@ import java.util.List;
 public class OwnerValidator {
   private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  public void validateForCreate(OwnerCreateDto owner) throws ValidationException, ConflictException {
+  public void validateForCreate(OwnerCreateDto owner) throws ValidationException {
     LOG.trace("validateForCreate({})", owner);
     List<String> validationErrors = new ArrayList<>();
 

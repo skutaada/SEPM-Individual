@@ -42,11 +42,12 @@ public class HorseValidator {
       validationErrors.add("No ID given");
     }
 
-    if (horse.name() == null || horse.name().isBlank()){
+    if (horse.name() == null){
       validationErrors.add("Horses name cannot be empty");
-      if (horse.name().length() > 255) {
-        validationErrors.add("Horses name too long: longer than 255 characters");
-      }
+    } else if (horse.name().isBlank()) {
+      validationErrors.add("Horses name is given but is blank");
+    } else if (horse.name().length() > 255) {
+      validationErrors.add("Horses name too long: longer than 255 characters");
     }
 
     if (horse.description() != null) {
@@ -100,7 +101,9 @@ public class HorseValidator {
       validationErrors.add("Horses sex must be either male or female");
     }
 
-    if (LocalDate.now().isBefore(horse.dateOfBirth())) {
+    if (horse.dateOfBirth() == null) {
+      validationErrors.add("Horses date of birth must be given");
+    } else if (LocalDate.now().isBefore(horse.dateOfBirth())) {
       validationErrors.add("Horses date of birth cannot be in the future");
     }
 
@@ -118,11 +121,12 @@ public class HorseValidator {
     List<String> validationErrors = new ArrayList<>();
     List<String> conflictErrors = new ArrayList<>();
 
-    if (horse.name() == null || horse.name().isBlank()){
+    if (horse.name() == null){
       validationErrors.add("Horses name cannot be empty");
-      if (horse.name().length() > 255) {
-        validationErrors.add("Horses name too long: longer than 255 characters");
-      }
+    } else if (horse.name().isBlank()) {
+      validationErrors.add("Horses name is given but blank");
+    } else if (horse.name().length() > 255) {
+      validationErrors.add("Horses name too long: longer than 255 characters");
     }
 
     if (horse.description() != null) {
@@ -162,7 +166,9 @@ public class HorseValidator {
       validationErrors.add("Horses sex must either be male or female");
     }
 
-    if (LocalDate.now().isBefore(horse.dateOfBirth())) {
+    if (horse.dateOfBirth() == null) {
+      validationErrors.add("Horses birth date cannot be empty");
+    } else if (LocalDate.now().isBefore(horse.dateOfBirth())) {
       validationErrors.add("Horses birth date cannnot be in the future");
     }
 
