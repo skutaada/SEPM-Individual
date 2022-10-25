@@ -11,3 +11,5 @@ US 6 - 4 hours
 US 7 - 1 hour
 US 8 - 1 hour
 US 9 - 5 hours
+TS 15 - 2 hours
+TS 28 - 20 minutes
