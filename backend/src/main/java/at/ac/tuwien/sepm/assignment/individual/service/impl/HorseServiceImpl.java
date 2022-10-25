@@ -108,7 +108,7 @@ public class HorseServiceImpl implements HorseService {
   }
 
   @Override
-  public Stream<HorseListDto> search(HorseSearchDto searchParameters) throws NotFoundException {
+  public Stream<HorseListDto> search(HorseSearchDto searchParameters) {
     LOG.trace("search({})", searchParameters);
     var horses = dao.search(searchParameters);
     var ownerIds = horses.stream()

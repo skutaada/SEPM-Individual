@@ -44,14 +44,7 @@ public class HorseEndpoint {
     if (searchParameters == null) {
       return service.allHorses();
     }
-    try {
-      LOG.info(searchParameters.toString());
-      return service.search(searchParameters);
-    } catch (NotFoundException e) {
-      HttpStatus status = HttpStatus.NOT_FOUND;
-      logClientError(status, "Horses to get details of not found", e);
-      throw new ResponseStatusException(status, e.getMessage(), e);
-    }
+    return service.search(searchParameters);
   }
 
   @GetMapping("{id}")
@@ -90,7 +83,6 @@ public class HorseEndpoint {
   @DeleteMapping("{id}")
   public void delete(@PathVariable long id) {
     LOG.info("DELETE " + BASE_PATH + "/{}", id);
-
     try {
       service.delete(id);
     } catch (NotFoundException e) {

@@ -65,7 +65,7 @@ public class OwnerServiceImpl implements OwnerService {
   }
 
   @Override
-  public OwnerDto create(OwnerCreateDto newOwner) throws ValidationException, ConflictException {
+  public OwnerDto create(OwnerCreateDto newOwner) throws ValidationException {
     LOG.trace("create({})", newOwner);
     validator.validateForCreate(newOwner);
     return mapper.entityToDto(dao.create(newOwner));

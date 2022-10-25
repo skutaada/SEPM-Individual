@@ -1,9 +1,9 @@
 package at.ac.tuwien.sepm.assignment.individual.rest;
 
-import at.ac.tuwien.sepm.assignment.individual.dto.HorseCreateDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.OwnerCreateDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.OwnerDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.OwnerSearchDto;
+import at.ac.tuwien.sepm.assignment.individual.exception.ConflictException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.OwnerService;
 import java.lang.invoke.MethodHandles;
@@ -38,7 +38,7 @@ public class OwnerEndpoint {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public OwnerDto create(@RequestBody OwnerCreateDto toCreate) throws ValidationException {
+  public OwnerDto create(@RequestBody OwnerCreateDto toCreate) throws ValidationException, ConflictException {
     LOG.info("POST " + BASE_PATH + "/{}", toCreate);
     return service.create(toCreate);
   }

@@ -52,6 +52,7 @@ public interface HorseService {
    * @param newHorse the data for the new horse
    * @return the horse that was newly created in the persistent data store
    * @throws ValidationException if Horse data do not pass the validation check
+   * @throws ConflictException if the data given for the creation of the horse are in conflict with existing data in database
    */
   HorseDetailDto create(HorseCreateDto newHorse) throws ValidationException, ConflictException;
 
@@ -63,7 +64,13 @@ public interface HorseService {
    */
   void delete(long id) throws NotFoundException;
 
-  Stream<HorseListDto> search(HorseSearchDto searchParameters) throws NotFoundException;
+  /**
+   * Search for horses in the persistent data store
+   *
+   * @param searchParameters the search parameters for the filtering
+   * @return List of all horses that pass the search parameters
+   */
+  Stream<HorseListDto> search(HorseSearchDto searchParameters);
 
 
 }

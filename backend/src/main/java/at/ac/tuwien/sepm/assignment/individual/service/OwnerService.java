@@ -50,7 +50,7 @@ public interface OwnerService {
    *
    * @param newOwner the data for the new owner
    * @return the owner, that was just newly created in the persistent data store
-   * @throws ValidationException if the
+   * @throws ValidationException if the owner does pass the validation procedure
    */
-  OwnerDto create(OwnerCreateDto newOwner) throws ValidationException, ConflictException;
+  OwnerDto create(OwnerCreateDto newOwner) throws ValidationException;
 }
