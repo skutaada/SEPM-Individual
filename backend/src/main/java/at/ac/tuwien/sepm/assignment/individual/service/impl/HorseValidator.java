@@ -35,6 +35,8 @@ public class HorseValidator {
   public void validateForUpdate(HorseDetailDto horse) throws ValidationException, ConflictException {
     LOG.trace("validateForUpdate({})", horse);
     List<String> validationErrors = new ArrayList<>();
+    List<String> conflictErrors = new ArrayList<>();
+
 
     if (horse.id() == null) {
       validationErrors.add("No ID given");
@@ -42,6 +44,9 @@ public class HorseValidator {
 
     if (horse.name() == null || horse.name().isBlank()){
       validationErrors.add("Horses name cannot be empty");
+      if (horse.name().length() > 255) {
+        validationErrors.add("Horses name too long: longer than 255 characters");
+      }
     }
 
     if (horse.description() != null) {
@@ -57,10 +62,10 @@ public class HorseValidator {
       try {
         var father = horseDao.getById(horse.fatherId());
         if (father.getFatherId() == horse.id()) {
-          validationErrors.add("Cannot set horses son as father");
+          conflictErrors.add("Cannot set horses son as father");
         }
       } catch (NotFoundException e) {
-        validationErrors.add("Horses father must exist");
+        conflictErrors.add("Horses father must exist");
       }
     }
 
@@ -68,10 +73,10 @@ public class HorseValidator {
       try {
          var mother = horseDao.getById(horse.motherId());
          if (mother.getMotherId() == horse.id()) {
-           validationErrors.add("Cannot set horses daughter as mother");
+           conflictErrors.add("Cannot set horses daughter as mother");
          }
       } catch (NotFoundException e) {
-        validationErrors.add("Horses mother must exist");
+        conflictErrors.add("Horses mother must exist");
       }
     }
 
@@ -87,7 +92,7 @@ public class HorseValidator {
       try {
         ownerDao.getById(horse.ownerId());
       } catch (NotFoundException e) {
-        validationErrors.add("Horses owner must exist");
+        conflictErrors.add("Horses owner must exist");
       }
     }
 
@@ -102,14 +107,22 @@ public class HorseValidator {
     if (!validationErrors.isEmpty()) {
       throw new ValidationException("Validation of horse for update failed", validationErrors);
     }
+
+    if (!conflictErrors.isEmpty()) {
+      throw new ConflictException("Conflict ofr horse update occured", conflictErrors);
+    }
   }
 
   public void validateForCreate(HorseCreateDto horse) throws ValidationException, ConflictException {
     LOG.trace("validateForUpdate({})", horse);
     List<String> validationErrors = new ArrayList<>();
+    List<String> conflictErrors = new ArrayList<>();
 
     if (horse.name() == null || horse.name().isBlank()){
       validationErrors.add("Horses name cannot be empty");
+      if (horse.name().length() > 255) {
+        validationErrors.add("Horses name too long: longer than 255 characters");
+      }
     }
 
     if (horse.description() != null) {
@@ -125,7 +138,7 @@ public class HorseValidator {
       try {
         horseDao.getById(horse.fatherId());
       } catch (NotFoundException e) {
-        validationErrors.add("Horses father must exist");
+        conflictErrors.add("Horses father given but not found");
       }
     }
 
@@ -133,7 +146,7 @@ public class HorseValidator {
       try {
         horseDao.getById(horse.motherId());
       } catch (NotFoundException e) {
-        validationErrors.add("Horses mother must exist");
+        conflictErrors.add("Horses mother given but not found");
       }
     }
 
@@ -141,7 +154,7 @@ public class HorseValidator {
       try {
         ownerDao.getById(horse.ownerId());
       } catch (NotFoundException e) {
-        validationErrors.add("Horses owner must exist");
+        conflictErrors.add("Horses owner given but not found");
       }
     }
 
@@ -155,6 +168,9 @@ public class HorseValidator {
 
     if (!validationErrors.isEmpty()) {
       throw new ValidationException("Validation of horse for update failed", validationErrors);
+    }
+    if (!conflictErrors.isEmpty()) {
+      throw new ConflictException("Conflict for horse update occured", conflictErrors);
     }
   }
 

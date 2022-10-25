@@ -22,10 +22,16 @@ public class OwnerValidator {
 
     if (owner.firstName() == null || owner.firstName().isBlank()) {
       validationErrors.add("Owners first name cannot be empty");
+      if (owner.firstName().length() > 255) {
+        validationErrors.add("Owners first name too long: Longer than 255 characters");
+      }
     }
 
     if (owner.lastName() == null || owner.lastName().isBlank()) {
       validationErrors.add("Owners last name cannot be empty");
+      if (owner.lastName().length() > 255) {
+        validationErrors.add("Owners last name too long: Longer than 255 characters");
+      }
     }
 
     if (owner.email() != null) {
