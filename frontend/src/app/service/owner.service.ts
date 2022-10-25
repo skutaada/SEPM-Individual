@@ -37,6 +37,13 @@ export class OwnerService {
     );
   }
 
+  /**
+   * Search for the owners in the persistent database
+   *
+   * @param name string that should be contained in the owners name
+   * @param limitTo maximal number of returned owners
+   * @returns List of owners that match the criteria
+   */
   public searchByName(name: string, limitTo: number): Observable<Owner[]> {
     const params = new HttpParams()
       .set('name', name)

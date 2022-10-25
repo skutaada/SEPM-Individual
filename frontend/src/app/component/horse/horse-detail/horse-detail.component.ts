@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import {of, Observable} from 'rxjs';
 import {Horse} from '../../../dto/horse';
 import {Owner} from '../../../dto/owner';
 import {Sex} from '../../../dto/sex';
@@ -69,7 +68,7 @@ export class HorseDetailComponent implements OnInit {
         this.router.navigate(['/horses']);
       },
       error: error => {
-        this.notification.error(error.message, error.errors);
+        this.notification.error('Horse to be deleted was not found');
       }
     });
   }

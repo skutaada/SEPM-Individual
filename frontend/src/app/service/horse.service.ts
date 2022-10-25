@@ -39,7 +39,7 @@ export class HorseService {
    * Create a new horse in the system.
    *
    * @param horse the data for the horse that should be created
-   * @return an Observable for the created horse
+   * @returns an Observable for the created horse
    */
   create(horse: Horse): Observable<Horse> {
     return this.http.post<Horse>(
@@ -52,7 +52,7 @@ export class HorseService {
    * Edit a horse in the system.
    *
    * @param horse the data for the horse to be edited
-   * @return an Observable for the edited horse
+   * @returns an Observable for the edited horse
    */
   edit(horse: Horse): Observable<Horse> {
     return this.http.put<Horse>(
@@ -72,6 +72,14 @@ export class HorseService {
     );
   }
 
+  /**
+   * Searches the persistent database according to name and sex
+   *
+   * @param name string that should be contained in the horses name
+   * @param sex gender of the horse to find
+   * @param limitTo maximal number of returned horses
+   * @returns List of horsess that match the search criteria
+   */
   searchByName(name: string, sex: Sex, limitTo: number): Observable<Horse[]> {
     const params = new HttpParams()
       .set('name', name)
@@ -81,6 +89,12 @@ export class HorseService {
 
   }
 
+  /**
+   * Searches the horses in persistent data store
+   *
+   * @param horseSearch search criteria
+   * @returns List of horses that match the search criteria
+   */
   search(horseSearch: HorseSearch): Observable<Horse[]> {
     let params = new HttpParams();
     console.log(horseSearch);

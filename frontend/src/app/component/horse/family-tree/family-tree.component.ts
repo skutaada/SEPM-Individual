@@ -6,7 +6,6 @@ import {MatTreeNestedDataSource} from '@angular/material/tree';
 import {HorseService} from '../../../service/horse.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
-import {D} from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-family-tree',
@@ -50,6 +49,7 @@ export class FamilyTreeComponent implements OnInit {
         this.dataSource.data = [this.treeData];
       },
       error: error => {
+        this.notification.error('Horse with the given id was not found');
         this.router.navigate(['/horses']);
       }
     });
@@ -84,12 +84,9 @@ export class FamilyTreeComponent implements OnInit {
       },
       error: error => {
         console.error('Error deleting horse', error);
+        this.notification.error(error.error.errors, error.error.message);
       }
     });
-  }
-
-  public setDepth() {
-    console.log(this.depth);
   }
 
 }

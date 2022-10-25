@@ -30,7 +30,6 @@ export class HorseCreateEditComponent implements OnInit {
     dateOfBirth: new Date(),
     sex: Sex.female,
   };
-  horseSearch: HorseSearch = {};
 
 
   constructor(
@@ -153,8 +152,7 @@ export class HorseCreateEditComponent implements OnInit {
         },
         error: error => {
           console.error('Error creating horse', error);
-          // TODO show an error message to the user. Include and sensibly present the info from the backend!
-          this.notification.error(`Horse ${this.horse.name} failed to update because: ${error.error.errors}`);
+          this.notification.error(error.error.errors, error.error.message);
         }
       });
     }
@@ -169,6 +167,7 @@ export class HorseCreateEditComponent implements OnInit {
       },
       error: error => {
         console.error('Error deleting horse', error);
+        this.notification.error(error.error.errors, error.error.message);
       }
     });
   }

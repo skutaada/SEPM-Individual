@@ -4,9 +4,7 @@ import {HorseService} from 'src/app/service/horse.service';
 import {Horse, HorseSearch} from '../../dto/horse';
 import {Owner} from '../../dto/owner';
 import {Router} from '@angular/router';
-import {Sex} from '../../dto/sex';
 import {OwnerService} from '../../service/owner.service';
-import {of} from 'rxjs';
 
 @Component({
   selector: 'app-horse',
@@ -65,14 +63,10 @@ export class HorseComponent implements OnInit {
         this.reloadHorses();
       },
       error: error => {
-        console.error('Error deleting horse', error);
+        this.notification.error('Horse to be deleted was not found');
       }
     });
   }
-
-  ownerSuggestions = (input: string) => (input === '')
-    ? of([])
-    : this.ownerService.searchByName(input, 5);
 
   ownerName(owner: Owner | null): string {
     return (owner == null)
